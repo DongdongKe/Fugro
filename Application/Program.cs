@@ -32,7 +32,22 @@ namespace Application
                 positions.Add(new Position(latitude, longitude, height));
             }
             checkDuplicatedPosition(positions);
+            foreach (var p in positions.OrderByDescending(x => x.Latitude))
+            {
+                PrintSortedPosition(p);
+                Console.WriteLine("-------------------------------------");
+            }
+            foreach (var p in positions.OrderBy(x => x.Longitude))
+            {
+                PrintSortedPosition(p);
+            }
         }
+
+        private static void PrintSortedPosition(Position p)
+        {
+            Console.WriteLine($"latitude:{p.Latitude}, longitude:{p.Longitude}, height:{p.Height}");
+        }
+
         public static double UserInput()
         {
             double value = -1;
@@ -59,12 +74,5 @@ namespace Application
             }
         }
 
-        public static void WriteToConsole(List<Position> items)
-        {
-            foreach (object o in items)
-            {
-                Console.WriteLine(o);
-            }
-        }
     }
 }
