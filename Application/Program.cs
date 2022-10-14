@@ -11,20 +11,22 @@ namespace Application
         {
             Console.WriteLine("Welcome to Fugro. Enjoy your assignment!");
             List<Position> positions = new List<Position>();
+            int latitudeMax = 90, latitudeMin = -90;
+            int longitudeMax = 180, longitudeMin = -180;
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine($"Input No.{i+1} latitude");
                 double latitude = UserInput();
-                if (latitude<-90 || latitude>90)
+                if (latitude < latitudeMin || latitude > latitudeMax)
                 {
-                    Console.WriteLine("Error! Please input latitude between -90 and 90 degree");
+                    Console.WriteLine($"Error! Please input latitude between {latitudeMin} and {latitudeMax} degree");
                     latitude = UserInput();
                 }
-                Console.WriteLine($"Input No.{i+1} longtitude");
+                Console.WriteLine($"Input No.{i+1} longitude");
                 double longitude = UserInput();
                 if (longitude < -180 || longitude > 180)
                 {
-                    Console.WriteLine("Error! Please input longtitude between -180 and 180 degree");
+                    Console.WriteLine($"Error! Please input longitude between {longitudeMax} and {longitudeMin} degree");
                     longitude = UserInput();
                 }
                 Console.WriteLine($"Input No.{i+1} height");
@@ -32,20 +34,11 @@ namespace Application
                 positions.Add(new Position(latitude, longitude, height));
             }
             checkDuplicatedPosition(positions);
-            foreach (var p in positions.OrderByDescending(x => x.Latitude))
-            {
-                PrintSortedPosition(p);
-                Console.WriteLine("-------------------------------------");
-            }
-            foreach (var p in positions.OrderBy(x => x.Longitude))
+            foreach (var p in positions.OrderByDescending(x => x.Latitude).ThenBy(y => y.Longitude))
             {
                 PrintSortedPosition(p);
             }
-        }
-
-        private static void PrintSortedPosition(Position p)
-        {
-            Console.WriteLine($"latitude:{p.Latitude}, longitude:{p.Longitude}, height:{p.Height}");
+            Calculator.Calculate();
         }
 
         public static double UserInput()
@@ -66,7 +59,7 @@ namespace Application
 
         public static void checkDuplicatedPosition(List<Position> positionsList)
         {
-            var list =  positionsList.GroupBy(x => new { x.Longitude, x.Latitude, x.Height }).ToList();
+            var list = positionsList.GroupBy(x => new { x.Longitude, x.Latitude, x.Height }).ToList();
             foreach (var i in list)
             {
                 if (i.Count() > 1)
@@ -74,5 +67,12 @@ namespace Application
             }
         }
 
+
+        private static void PrintSortedPosition(Position p)
+        {
+            Console.WriteLine($"latitude:{p.Latitude}, longitude:{p.Longitude}, height:{p.Height}");
+        }
+
+       
     }
 }
