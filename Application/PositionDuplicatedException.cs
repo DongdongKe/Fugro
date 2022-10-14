@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application
 {
-    internal class PositionDuplicatedException:Exception
+    public class PositionDuplicatedException:Exception
     {
         public PositionDuplicatedException(string message) : base(message)
         {

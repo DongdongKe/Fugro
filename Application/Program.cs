@@ -5,7 +5,7 @@ using Library;
 
 namespace Application
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -38,7 +38,11 @@ namespace Application
             {
                 PrintSortedPosition(p);
             }
-            Calculator.Calculate();
+            List<double> results =Calculator.CalculateDistance(positions);
+            foreach (var i in results)
+            {
+                Console.WriteLine(i);
+            }
         }
 
         public static double UserInput()
@@ -67,12 +71,9 @@ namespace Application
             }
         }
 
-
         private static void PrintSortedPosition(Position p)
         {
             Console.WriteLine($"latitude:{p.Latitude}, longitude:{p.Longitude}, height:{p.Height}");
         }
-
-       
     }
 }
